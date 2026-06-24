@@ -2,32 +2,32 @@ name: Daily Polymarket Analyzer
 
 on:
   schedule:
-    # Runs at 00:00 UTC every day
     - cron: '0 0 * * *'
-  workflow_dispatch: # Allows you to trigger it manually
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-          
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          
-      - name: Run Scraper
-        run: python scraper.py
-        
-      # Uploads the CSV so you can download it directly from the GitHub Actions tab
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: polymarket-smart-money
-          path: daily_smart_money.csv
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Run scraper
+      run: |
+        python scraper.py
+
+    - name: Upload results
+      uses: actions/upload-artifact@v4
+      with:
+        name: polymarket-smart-money
+        path: smart_money_*.csv
